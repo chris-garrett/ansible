@@ -1,0 +1,16 @@
+  
+  - name: Communication tools
+    hosts: all
+    become: yes
+
+  #   # roles:
+  #   # - role: <your role here>
+
+  #   # vars:
+  #   #   bash_aliases: "{{ ansible_env.HOME }}/.bash_aliases"
+  #   #   bash_exports: "{{ ansible_env.HOME }}/.bash_exports"
+
+  #   tasks:
+
+  #     - name: Install git
+  #       package: { name: git }

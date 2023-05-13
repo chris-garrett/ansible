@@ -1,0 +1,35 @@
+  
+  - name: Install editors
+    hosts: all
+    become: yes
+    
+    # Visual studio code
+    roles:
+    - role: gantsign.visual-studio-code
+
+    # Vim 
+    tasks:
+      - name: Install vim
+        package: { name: vim }
+
+      - name: Ensure .vim directories exists
+        file:
+          path: "{{ item }}"
+          state: directory
+          recurse: no
+          mode: 0750
+
+        loop:
+          - "/home/{{ dest_user }}/.vim"
+          - "/home/{{ dest_user }}/.vim/autoload"
+          - "/home/{{ dest_user }}/.vim/bundle"
+
+      - name: Ensure .vimrc config in place
+        copy:
+          src: dotfiles/vimrc
+          dest: "/home/{{ dest_user }}/.vimrc"
+          backup: yes
+          mode: 0640
+          owner: "{{ dest_user }}"
+
+

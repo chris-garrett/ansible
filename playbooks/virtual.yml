@@ -1,0 +1,29 @@
+  
+  - name: Virtual Machine
+    hosts: all
+    become: yes
+
+    # roles:
+    # - role: <your role here>
+
+    # vars:
+    #   bash_aliases: "{{ ansible_env.HOME }}/.bash_aliases"
+    #   bash_exports: "{{ ansible_env.HOME }}/.bash_exports"
+
+    tasks:
+
+      - name: Install build-essential
+        package: { name: build-essential }
+
+      - name: Install linux-headers
+        package: { name: "linux-headers-{{ ansible_kernel }}" }
+
+      - name: Install dkms
+        package: { name: dkms }
+
+      - name: Install open-vm-tools-desktop
+        package: { name: open-vm-tools-desktop }
+
+      - name: Install fuse
+        package: { name: fuse }
+

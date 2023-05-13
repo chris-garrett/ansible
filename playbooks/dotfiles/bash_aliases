@@ -1,0 +1,8 @@
+alias l='ls -laFHh'
+alias cdp='cd ~/projects'
+alias t='./task'
+alias d='docker'
+alias dc='docker-compose'
+alias dm='docker-machine'
+alias dps='docker ps --format "table {{.ID}}    {{.Names}}      {{.Status}}     {{.Image}}"'
+alias dclean='docker rm -v $(docker ps -a -q -f status=exited) ; docker rmi $(docker images -f "dangling=true" -q)'

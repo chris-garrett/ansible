@@ -1,0 +1,19 @@
+  
+  - name: Communication tools
+    hosts: all
+    become: yes
+
+    # roles:
+    # - role: <your role here>
+
+    # vars:
+    #   bash_aliases: "{{ ansible_env.HOME }}/.bash_aliases"
+    #   bash_exports: "{{ ansible_env.HOME }}/.bash_exports"
+
+    tasks:
+
+      - name: Install chromium-browser
+        package: { name: chromium-browser }     
+
+      - name: Install firefox
+        package: { name: firefox }     

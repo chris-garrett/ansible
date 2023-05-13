@@ -1,0 +1,67 @@
+  
+  - name: Developer
+    hosts: all
+    become: yes
+
+    tasks:
+
+      # .Net 5
+
+      - name: Download MS product repository
+        get_url:
+          url: https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+          dest: /tmp/packages-microsoft-prod.deb
+      - name: Install MS product repository
+        apt: deb=/tmp/packages-microsoft-prod.deb
+      - name: Make sure HTTPS is supported by apt
+        apt:
+          name: apt-transport-https
+          state: present
+          update_cache: no
+      - name: Install .NET Core SDK
+        apt:
+          name: dotnet-sdk-5.0
+          state: present
+          update_cache: yes
+
+      - name: Install git
+        package: { name: git }
+
+      - name: Install git-lfs
+        package: { name: git-lfs }
+
+      - name: Install nodejs
+        package: { name: nodejs }
+
+      - name: Download Jetbrains Toolbox
+        get_url:
+          url: https://data.services.jetbrains.com/products/download?platform=linux&code=TBA
+          dest: /tmp/jetbrains-toolbox.tar.gz
+
+      - name: Create Jetbrains Toolbox temp directory
+        file:
+          path: /tmp/jetbrains-toolbox
+          state: directory
+
+      - name: Unpack Jetbrains Toolbox
+        ansible.builtin.unarchive:
+          src: /tmp/jetbrains-toolbox.tar.gz
+          dest: /tmp/jetbrains-toolbox
+
+      - name: Find Jetbrains Toolbox exe
+        find:
+          paths: /tmp/jetbrains-toolbox
+          patterns: "jetbrains-toolbox"
+          file_type: "file"
+          recurse: yes
+        register: found
+
+      - name: Move Jetbrains Toolbox
+        ansible.builtin.copy:
+          src: "{{item.path}}"
+          dest: /usr/local/bin
+          mode: 0755
+        with_items: "{{found.files}}"
+
+      - name: Increase inotify user limit
+        sysctl: name=fs.inotify.max_user_watches value=524288 sysctl_set=yes
